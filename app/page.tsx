@@ -1,21 +1,13 @@
-import { Users } from 'components/Users'
-import { getUsers } from 'utilities/getUsers'
+import { Server } from 'components/Server'
+import { Client } from 'components/Client'
 
-const DataFetchingServer = async () => {
-  const { error, users } = await getUsers()
-
-  if (error) {
-    return <p>{error}</p>
-  }
-  if (!users) {
-    return <p>No users!</p>
-  }
+const HomePage = () => {
   return (
     <main>
-      <h1>React server component demo</h1>
-      <Users users={users} />
+      <Server />
+      <Client />
     </main>
   )
 }
 
-export default DataFetchingServer
+export default HomePage

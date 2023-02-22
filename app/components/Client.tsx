@@ -1,9 +1,11 @@
+'use client'
 import { useState, useEffect } from 'react'
 import { getUsers } from 'utilities/getUsers'
 import type { User } from 'types/User'
 import { Users } from 'components/Users'
+import { Error } from './Error'
 
-const DataFetchingClient = () => {
+export const Client = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [users, setUsers] = useState<User[]>([])
@@ -19,13 +21,13 @@ const DataFetchingClient = () => {
   }, [])
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <p>Loading users...</p>
   }
   if (error) {
-    return <p>{error}</p>
+    return <Error message={error} />
   }
   if (!users) {
-    return <p>No users!</p>
+    return <Error message='No users!' />
   }
   return (
     <main>
@@ -34,5 +36,3 @@ const DataFetchingClient = () => {
     </main>
   )
 }
-
-export default DataFetchingClient
