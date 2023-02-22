@@ -5,6 +5,7 @@ const HomePage = () => {
   return (
     <main>
       <Server />
+      <hr />
       <Client />
     </main>
   )

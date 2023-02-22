@@ -3,31 +3,42 @@ import { useState, useEffect } from 'react'
 import { getUsers } from 'utilities/getUsers'
 import type { User } from 'types/User'
 import { Users } from 'components/Users'
-import { Error } from './Error'
+import { Error as ErrorComponent } from './Error'
 
-export const Client = () => {
+const useUsers = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const { error, users } = await getUsers()
-      setError(error)
+      let users: User[] = []
+      try {
+        users = await getUsers()
+      } catch (e) {
+        if (e instanceof Error) {
+          setError(e.message)
+        } else {
+          setError('Unknown error')
+        }
+      }
+
       setUsers(users)
       setIsLoading(false)
     }
     fetchUsers()
   }, [])
 
+  return { isLoading, error, users }
+}
+
+export const Client = () => {
+  const { isLoading, error, users } = useUsers()
   if (isLoading) {
-    return <p>Loading users...</p>
+    return <p>Loading the client component...</p>
   }
   if (error) {
-    return <Error message={error} />
-  }
-  if (!users) {
-    return <Error message='No users!' />
+    return <ErrorComponent message={error} />
   }
   return (
     <main>
